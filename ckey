@@ -1,0 +1,98 @@
+#!/usr/bin/env python3
+import hashlib
+import argparse
+import random
+import string
+import sys
+
+ALGORITHM_VERSION = "v1"
+
+# Símbolos seguros apenas
+SIMBOLOS_SEGUROS = "!@#$%^&*()-_+="
+
+def gerar_senha(frase: str, site: str, tamanho: int = 20, estilo: str = "default") -> str:
+    if tamanho < 8:
+        print("⚠️  Minimum recommended password length is 8 characters.")
+        sys.exit(1)
+
+    frase = frase.strip()
+    site = site.strip().lower()
+    salt = f"{site}|{ALGORITHM_VERSION}|{estilo}".encode()
+
+    chave = hashlib.pbkdf2_hmac('sha256', frase.encode(), salt, 100_000)
+    rng = random.Random()
+    rng.seed(int.from_bytes(chave, byteorder='big'))
+
+    # Define conjuntos padrão
+    letras_maiusculas = string.ascii_uppercase
+    letras_minusculas = string.ascii_lowercase
+    digitos = string.digits
+    simbolos = SIMBOLOS_SEGUROS
+
+    if estilo == "default":
+        alfabeto = letras_maiusculas + letras_minusculas + digitos + simbolos
+        obrigatorios = [
+            rng.choice(letras_maiusculas),
+            rng.choice(letras_minusculas),
+            rng.choice(digitos),
+            rng.choice(simbolos)
+        ]
+
+    elif estilo == "alphanumeric":
+        alfabeto = letras_maiusculas + letras_minusculas + digitos
+        obrigatorios = [
+            rng.choice(letras_maiusculas),
+            rng.choice(letras_minusculas),
+            rng.choice(digitos)
+        ]
+
+    elif estilo == "ascii-only":
+        alfabeto = letras_minusculas + digitos
+        obrigatorios = [
+            rng.choice(letras_minusculas),
+            rng.choice(digitos)
+        ]
+
+    elif estilo == "strong-symbol":
+        alfabeto = letras_maiusculas + letras_minusculas + digitos + simbolos
+        obrigatorios = [
+            rng.choice(letras_maiusculas),
+            rng.choice(letras_minusculas),
+            rng.choice(digitos),
+            rng.choice(simbolos),
+            rng.choice(simbolos)  # Força 2 símbolos
+        ]
+    else:
+        print(f"❌ Unknown style: {estilo}")
+        sys.exit(1)
+
+    senha = obrigatorios.copy()
+
+    while len(senha) < tamanho:
+        senha.append(rng.choice(alfabeto))
+
+    rng.shuffle(senha)
+    return ''.join(senha)
+
+def main():
+    parser = argparse.ArgumentParser(description="CriptyKey - Deterministic password generator (v1)")
+    parser.add_argument('-n', '--nova', required=True, help="Master passphrase")
+    parser.add_argument('-s', '--site', required=True, help="Site or service name")
+    parser.add_argument('-t', '--tamanho', type=int, default=20, help="Password length (default: 20)")
+    parser.add_argument('--style', choices=['default', 'alphanumeric', 'ascii-only', 'strong-symbol'],
+                        default='default', help="Password style")
+
+    args = parser.parse_args()
+
+    senha = gerar_senha(
+        frase=args.nova,
+        site=args.site,
+        tamanho=args.tamanho,
+        estilo=args.style
+    )
+
+    print(senha)
+
+if __name__ == "__main__":
+    main()
+
