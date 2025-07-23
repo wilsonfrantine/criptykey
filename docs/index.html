@@ -2,26 +2,100 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CriptyKey</title>
-  <link rel="stylesheet" href="style.css"/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self'; font-src 'self'; connect-src 'none';">
+  <title>🔐 CriptyKey Web</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="fonts/css/all.min.css">
 </head>
-<body>
-  <h1>🔐 CriptyKey Web</h1>
-  <form id="ckey-form">
-    <label>Passphrase:</label><input type="password" id="pass" required /><br/>
-    <label>Site/Service:</label><input type="text" id="site" required /><br/>
-    <label>Length:</label><input type="number" id="length" value="20" /><br/>
-    <label>Style:</label>
-    <select id="style">
-      <option value="default">default</option>
-      <option value="alphanumeric">alphanumeric</option>
-      <option value="strong-symbol">strong-symbol</option>
-      <option value="ascii-only">ascii-only</option>
-    </select><br/>
-    <button type="submit">Generate</button>
-  </form>
-  <pre id="output"></pre>
-  <script src="app.js"></script>
+<body class="theme-dark">
+  <div id="particles-js"></div>
+
+  <button id="theme-toggle" aria-label="Toggle theme">
+    <i class="fas fa-moon"></i>
+  </button>
+
+  <main>
+    <h1><i class="fas fa-key"></i> CriptyKey Web</h1>
+    <p id="slogan" class="slogan">Remember one. Unlock all.</p>
+
+    <form id="ckey-form" autocomplete="off" onsubmit="return false;">
+      <label for="pass">Passphrase:</label>
+      <div class="input-group">
+        <input type="password" id="pass" autocomplete="new-password" />
+        <button type="button" class="toggle-visibility" data-target="pass">
+          <i class="fas fa-eye"></i>
+        </button>
+      </div>
+
+      <label for="site">Site/Service:</label>
+      <input type="text" id="site" placeholder="example.com" required />
+
+      <details>
+        <summary><i class="fas fa-gear"></i> Settings</summary>
+        <label for="length">Length:</label>
+        <input type="number" id="length" value="20" min="8" max="64" />
+
+        <label for="style">Style:</label>
+        <select id="style">
+          <option value="default">default</option>
+          <option value="alphanumeric">alphanumeric</option>
+          <option value="ascii-only">ascii-only</option>
+          <option value="strong-symbol">strong-symbol</option>
+        </select>
+      </details>
+
+      <button type="submit" class="generate">Generate</button>
+    </form>
+
+    <div id="output-container" class="hidden">
+      <input type="password" id="output" readonly />
+      <button type="button" id="reveal-output">
+        <i class="fas fa-eye"></i>
+      </button>
+      <button type="button" id="copy-output">
+        <i class="fas fa-copy"></i>
+      </button>
+    </div>
+    <p class="privacy-note">
+      🔐 This app runs 100% in your browser. No data is stored or sent anywhere.<br />
+      Open-source at <a href="https://github.com/wilsonfrantine/criptykey" target="_blank">GitHub</a>.
+    </br> Made with 💻 by <a href="https://github.com/wilsonfrantine" target="_blank">wilsonfrantine</a> • MIT Licensed
+
+    </p>
+  </main>
+
+  <button id="about-btn" class="about-link">
+  <i class="fas fa-circle-info"></i> About
+</button>
+
+<div id="about-modal" class="modal hidden">
+  <div class="modal-content">
+    <span id="close-modal" class="close">&times;</span>
+    <h2>🔐 About CriptyKey Web</h2>
+    <p><strong>CriptyKey</strong> helps you create strong and unique passwords for each website or service — using just one phrase that only you know.</p>
+    
+    <p>Instead of remembering dozens of passwords, you just remember one sentence (your <em>passphrase</em>). CriptyKey uses that to generate secure passwords that are:</p>
+
+    <ul>
+      <li>🔒 Unique for each website</li>
+      <li>⚡ Instantly generated — nothing is saved or sent anywhere</li>
+      <li>🧠 Easy to use, no need to install or register</li>
+    </ul>
+
+    <p>You are always in control. Everything runs on your device, safely and privately.</p>
+    
+    <p>🔗 <a href="https://github.com/wilsonfrantine/CriptyKey" target="_blank">See how it works on GitHub</a></p>
+  </div>
+</div>
+
+
+
+  <!-- Scripts -->
+  <script src="js/particles.min.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/visual.js"></script>
+  <script src="js/particles.js"></script>
+  <script type="module" src="js/app.js"></script>
 </body>
 </html>

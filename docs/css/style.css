@@ -1,0 +1,268 @@
+:root {
+  --bg: #f4f4f4;
+  --text: #111;
+  --input: #fff;
+  --border: #ccc;
+  --primary: #007bff;
+  --font-size: 1rem;
+  --form-scale: 1.5;
+}
+
+.theme-dark {
+  --bg: #0d0f17;
+  --text: #f4f4f4;
+  --input: #1c1e26;
+  --border: #333;
+  --primary: #29d3e2;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  transition: background 0.3s, color 0.3s;
+  font-size: calc(var(--font-size) * var(--form-scale));
+}
+
+#particles-js {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+main {
+  background: var(--input);
+  padding: 2rem;
+  border-radius: 12px;
+  width: min(90vw, 600px);
+  min-width: 320px;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.4);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: var(--primary);
+}
+
+form label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
+input, select {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-top: 0.3rem;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 1rem;
+}
+
+button.generate {
+  background: var(--primary);
+  color: var(--bg);
+  font-size: var(--font-size);
+  border: none;
+  margin-top: 1.5rem;
+  width: 100%;
+  padding: 1rem;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.input-group {
+  display: flex;
+  align-items: center;
+}
+
+.input-group input {
+  flex: 1;
+  margin-right: 0.5rem;
+}
+
+.input-group button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text);
+  font-size: 1.2rem;
+}
+
+#output-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+#output-container input {
+  flex: 1;
+  padding: 0.6em 1em;
+  border-radius: 0.4em;
+  border: 1px solid var(--border);
+  background-color: var(--input-bg);
+  color: var(--text-color, --text);
+  font-size: var(--font-size)*1.1;
+  text-align: center;
+}
+
+#output-container button {
+  background-color: var(--input);
+  border: none;
+  padding: 0.6em 0.8em;
+  border-radius: 0.4em;
+  cursor: pointer;
+  color: var(--text);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+#output-container button:hover {
+  background-color: var(--accent-color-hover, #00aacc);
+}
+
+
+/* theme toggle */
+
+#theme-toggle {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  color: var(--text);
+  cursor: pointer;
+}
+
+details summary {
+  cursor: pointer;
+  margin-top: 1rem;
+  font-weight: bold;
+  color: var(--primary);
+}
+
+.hidden {
+  display: none;
+}
+
+
+/* About section */
+
+.about-link {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background: var(--accent-color, #00cfff);
+  border: none;
+  padding: 0.6em 1em;
+  border-radius: 0.4em;
+  font-size: 0.95rem;
+  color: white;
+  cursor: pointer;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(3px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: var(--form-bg, #1f1f1f);
+  padding: 2rem;
+  border-radius: 8px;
+  max-width: 500px;
+  width: 90%;
+  color: var(--text-color, #fff);
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+  position: relative;
+}
+
+.close {
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  color: var(--text-color, #ccc);
+  cursor: pointer;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal a {
+  color: var(--accent-color, #00cfff);
+  text-decoration: underline;
+}
+
+
+/* slongan */
+
+.slogan {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-muted, #aaa);
+  margin-top: -0.5rem;
+  margin-bottom: 1.5rem;
+  transition: opacity 0.8s ease;
+  height: 1.5em;
+  text-align: center;
+}
+
+/* privacy note */
+
+.privacy-note {
+  font-size: 0.85rem;
+  color: var(--text-muted, #aaa);
+  text-align: center;
+  margin-top: 1rem;
+  font-style: italic;
+}
+
+.footer-note {
+  font-size: 0.75rem;
+  text-align: center;
+  margin-top: 2rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+.footer-note a {
+  color: inherit;
+  text-decoration: underline;
+}
+
