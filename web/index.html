@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CriptyKey</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <h1>🔐 CriptyKey Web</h1>
+  <form id="ckey-form">
+    <label>Passphrase:</label><input type="password" id="pass" required /><br/>
+    <label>Site/Service:</label><input type="text" id="site" required /><br/>
+    <label>Length:</label><input type="number" id="length" value="20" /><br/>
+    <label>Style:</label>
+    <select id="style">
+      <option value="default">default</option>
+      <option value="alphanumeric">alphanumeric</option>
+      <option value="strong-symbol">strong-symbol</option>
+      <option value="ascii-only">ascii-only</option>
+    </select><br/>
+    <button type="submit">Generate</button>
+  </form>
+  <pre id="output"></pre>
+  <script src="app.js"></script>
+</body>
+</html>
