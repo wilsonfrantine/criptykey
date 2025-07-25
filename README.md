@@ -84,14 +84,18 @@ ckey -n "correct horse battery staple" -s "github.com" --style default -t 24
 - CriptyKey never saves or transmits any information
 - Passwords are strong, reproducible, and unique to each site
 - Fully deterministic and offline
-- Internally uses a fixed version salt for reproducibility: `"CriptyKey-v1"`
+- Salt and deterministic seed use the string `<site>|v1|<style>` ensuring each
+  site and style combination yields unique passwords
 
 ---
 
 ## 🔄 Algorithm Version
 
-This is version `v1` of the password generation logic.  
-Future versions may extend functionality, but `v1` behavior will remain stable and compatible.
+This is version `v1` of the password generation logic.
+The master passphrase is hashed with PBKDF2-HMAC-SHA256 using the salt
+`<site>|v1|<style>`. Those 32 bytes seed a deterministic RNG used to build the
+password while ensuring required character types. Future versions may extend
+functionality, but `v1` behavior will remain stable and compatible.
 
 ---
 
