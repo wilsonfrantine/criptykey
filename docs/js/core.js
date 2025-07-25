@@ -1,6 +1,10 @@
+const ALGORITHM_VERSION = "v1";
+const SAFE_SYMBOLS = "!@#$%^&*()-_+=";
+
 export async function generatePassword(passphrase, site, length, style) {
   const encoder = new TextEncoder();
-  const salt = encoder.encode("CriptyKey-v1");
+  const saltStr = `${site.toLowerCase()}|${ALGORITHM_VERSION}|${style}`;
+  const salt = encoder.encode(saltStr);
   const keyMaterial = await window.crypto.subtle.importKey(
     "raw",
     encoder.encode(passphrase),
@@ -24,31 +28,50 @@ export async function generatePassword(passphrase, site, length, style) {
   const seed = hashArray.reduce(
     (acc, byte) => acc + byte.toString(16).padStart(2, "0"),
     ""
-  ) + site;
+  );
 
-  let chars = "";
+  const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const lower = "abcdefghijklmnopqrstuvwxyz";
+  const digits = "0123456789";
+  const symbols = SAFE_SYMBOLS;
+
+  let alphabet = "";
+  let required = [];
+  const rand = createDeterministicRNG(seed);
+  const pick = (set) => set[Math.floor(rand() * set.length)];
+
   switch (style) {
     case "alphanumeric":
-      chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      alphabet = upper + lower + digits;
+      required = [pick(upper), pick(lower), pick(digits)];
       break;
     case "ascii-only":
-      chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+      alphabet = lower + digits;
+      required = [pick(lower), pick(digits)];
       break;
     case "strong-symbol":
+      alphabet = upper + lower + digits + symbols;
+      required = [
+        pick(upper),
+        pick(lower),
+        pick(digits),
+        pick(symbols),
+        pick(symbols),
+      ];
+      break;
     case "default":
     default:
-      chars =
-        "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*_-+=";
+      alphabet = upper + lower + digits + symbols;
+      required = [pick(upper), pick(lower), pick(digits), pick(symbols)];
       break;
   }
 
-  const rand = createDeterministicRNG(seed);
-  let pwd = "";
-  for (let i = 0; i < length; i++) {
-    pwd += chars[Math.floor(rand() * chars.length)];
+  const pwdArr = required.slice();
+  while (pwdArr.length < length) {
+    pwdArr.push(alphabet[Math.floor(rand() * alphabet.length)]);
   }
-
-  return pwd;
+  shuffle(pwdArr, rand);
+  return pwdArr.join("");
 }
 
 function createDeterministicRNG(seedStr) {
@@ -83,4 +106,11 @@ function createDeterministicRNG(seedStr) {
 
   const seedFunc = xmur3(seedStr);
   return sfc32(seedFunc(), seedFunc(), seedFunc(), seedFunc());
+}
+
+function shuffle(arr, rand) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
 }
